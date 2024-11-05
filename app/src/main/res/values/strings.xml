@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">GitHub Downloader</string>
+    <string name="search">Search</string>
+    <string name="error_connection">Connection error. Try again later</string>
+    <string name="error_tooManyRequests">Too many requests. Try again later</string>
+    <string name="error_unknown">An unknown error occurred. Try again later</string>
+    <string name="search_nothingFound">The user does not exists or has no public repositories</string>
+    <string name="username">Username</string>
 </resources>

@@ -68,4 +68,13 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+
+    implementation(libs.kotlinx.serialization)
+
+    implementation(libs.kotlinx.immutableCollections)
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.kotlinx.serialization)
+
+    implementation(libs.okhttp.loggingInterceptor)
 }
