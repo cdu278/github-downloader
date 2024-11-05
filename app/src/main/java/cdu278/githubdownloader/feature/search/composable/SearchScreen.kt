@@ -34,10 +34,10 @@ fun SearchScreen(
     Column(
         modifier = modifier
     ) {
-        val user by viewModel.usernameFlow.collectAsStateWithLifecycle()
-        val uiState by viewModel.uiStateFlow.collectAsStateWithLifecycle()
+        val username by viewModel.usernameFlow.collectAsStateWithLifecycle()
+        val uiState by viewModel.uiFlow.collectAsStateWithLifecycle()
         SearchField(
-            value = user,
+            value = username,
             onValueChange = viewModel::inputUsername,
             canSearch = uiState.canSearch,
             search = viewModel::search,

@@ -22,15 +22,11 @@ import cdu278.githubdownloader.util.inputStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -57,58 +53,40 @@ class SearchViewModel @Inject constructor(
         _usernameFlow.value = value
     }
 
-    private val searchUserFlow = MutableSharedFlow<String>()
+    private val uiStateFlow = MutableStateFlow<UiState>(UiState.Initial)
+
+    private var updatingSearchResults: Job? = null
 
     fun search() {
-        viewModelScope.launch { searchUserFlow.emit(usernameFlow.value.trim()) }
-    }
-
-    private val loadingFlow = MutableStateFlow(false)
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private val searchResultFlow =
-        searchUserFlow.transformLatest { username ->
-            val result = try {
-                loadingFlow.value = true
-                search(username)
-            } finally {
-                loadingFlow.value = false
-            }
-            when (result) {
+        updatingSearchResults?.cancel()
+        updatingSearchResults = viewModelScope.launch {
+            uiStateFlow.value = UiState.Loading
+            when (val result = search(usernameFlow.value.trim())) {
                 is Ok -> {
                     val reposFlow = result.value
-                    emitAll(reposFlow.map { Ok(it) })
-                }
-                is Failure -> emit(result)
-            }
-        }.stateIn(viewModelScope, UiSharingStarted, initialValue = null)
+                    reposFlow.collect { repos ->
+                        val items = withContext(Dispatchers.Default) {
+                            repos
+                                .map { it.asItemUi() }
+                                .toImmutableList()
 
-    val uiStateFlow: StateFlow<SearchUi> =
-        combine(
-            usernameFlow,
-            searchResultFlow,
-            loadingFlow,
-        ) { user, searchResult, loading ->
-            SearchUi(
-                canSearch = user.trim().isNotEmpty(),
-                state = if (loading) {
-                    UiState.Loading
-                } else {
-                    when (searchResult) {
-                        null -> UiState.Initial
-                        is Ok -> {
-                            val repos = searchResult.value
-                            UiState.Loaded(
-                                items = withContext(Dispatchers.Default) {
-                                    repos
-                                        .map { it.asItemUi() }
-                                        .toImmutableList()
-                                }
-                            )
                         }
-                        is Failure -> UiState.Failed(searchResult.error.asUiError())
+                        uiStateFlow.value = UiState.Loaded(items)
                     }
                 }
+                is Failure -> uiStateFlow.value = UiState.Failed(result.error.asUiError())
+            }
+        }
+    }
+
+    val uiFlow: StateFlow<SearchUi> =
+        combine(
+            usernameFlow,
+            uiStateFlow,
+        ) { user, state ->
+            SearchUi(
+                canSearch = user.trim().isNotEmpty(),
+                state,
             )
         }.stateIn(viewModelScope, UiSharingStarted, initialValue = SearchUi())
 
