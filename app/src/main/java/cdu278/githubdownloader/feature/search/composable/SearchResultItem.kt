@@ -1,21 +1,21 @@
 package cdu278.githubdownloader.feature.search.composable
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import cdu278.githubdownloader.R
-import cdu278.githubdownloader.feature.description.composable.RepoDescription
+import cdu278.githubdownloader.feature.info.composable.RepoInfo
 import cdu278.githubdownloader.feature.search.SearchItemUi
 import cdu278.githubdownloader.feature.search.SearchItemUi.DownloadState.Finished
 import cdu278.githubdownloader.feature.search.SearchItemUi.DownloadState.NotStarted
@@ -32,36 +32,29 @@ fun SearchResultItem(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .padding(horizontal = Margins.default, vertical = Margins.half)
+            .padding(
+                start = Margins.default,
+                top = Margins.default,
+                bottom = Margins.default,
+                end = Margins.half,
+            )
     ) {
-        Info(
-            item,
+        RepoInfo(
+            title = item.title,
+            description = item.description,
             modifier = Modifier
                 .weight(1f)
         )
-        Spacer(Modifier.width(Margins.default))
+        Spacer(Modifier.width(Margins.half))
         DownloadState(
             item.downloadState,
             download = { download(item.id) },
+            modifier = Modifier
+                .size(48.dp)
         )
         ViewButton(
             onClick = { view(item.id) },
         )
-    }
-}
-
-@Composable
-private fun Info(
-    item: SearchItemUi,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-    ) {
-        Text(item.title)
-        item.description?.let {
-            RepoDescription(text = it)
-        }
     }
 }
 
@@ -72,6 +65,7 @@ private fun DownloadState(
     modifier: Modifier = Modifier
 ) {
     Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
     ) {
         when (downloadState) {
@@ -79,7 +73,11 @@ private fun DownloadState(
                 IconButton(onClick = download) {
                     Icon(painterResource(R.drawable.ic_download), contentDescription = null)
                 }
-            Started -> CircularProgressIndicator()
+            Started ->
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(24.dp)
+                )
             Finished -> Icon(painterResource(R.drawable.ic_downloaded), contentDescription = null)
         }
     }

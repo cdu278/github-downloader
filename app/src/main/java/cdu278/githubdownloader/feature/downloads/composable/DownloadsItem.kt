@@ -3,7 +3,6 @@ package cdu278.githubdownloader.feature.downloads.composable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -18,11 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cdu278.githubdownloader.R
-import cdu278.githubdownloader.feature.description.composable.RepoDescription
 import cdu278.githubdownloader.feature.downloads.DownloadItemUi
 import cdu278.githubdownloader.feature.downloads.DownloadItemUi.State.Failed
 import cdu278.githubdownloader.feature.downloads.DownloadItemUi.State.Finished
 import cdu278.githubdownloader.feature.downloads.DownloadItemUi.State.Started
+import cdu278.githubdownloader.feature.info.composable.RepoInfo
 import cdu278.githubdownloader.ui.Margins
 import cdu278.githubdownloader.ui.SecondaryContentAlpha
 
@@ -40,14 +39,10 @@ fun DownloadsItem(
             modifier = Modifier
                 .weight(1f)
         ) {
-            Text(item.title)
-            item.description?.let {
-                RepoDescription(
-                    text = it,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-            }
+            RepoInfo(
+                title = item.title,
+                description = item.description,
+            )
             StateText(item.state)
         }
         if (item.state == Started) {
