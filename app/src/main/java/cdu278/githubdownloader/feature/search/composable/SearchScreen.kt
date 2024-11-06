@@ -36,7 +36,7 @@ fun SearchScreen(
     ) {
         val username by viewModel.usernameFlow.collectAsStateWithLifecycle()
         val uiState by viewModel.uiFlow.collectAsStateWithLifecycle()
-        SearchField(
+        SearchBox(
             value = username,
             onValueChange = viewModel::inputUsername,
             canSearch = uiState.canSearch,
