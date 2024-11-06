@@ -19,6 +19,7 @@ import cdu278.githubdownloader.core.repo.download.RepoDownloadState.NotStarted
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Started
 import cdu278.githubdownloader.core.repo.download.usercase.DownloadRepoUseCase
 import cdu278.githubdownloader.core.repo.search.usecase.SearchRepoUseCase
+import cdu278.githubdownloader.core.repo.usecase.ViewRepoUseCase
 import cdu278.githubdownloader.feature.search.SearchItemUi
 import cdu278.githubdownloader.feature.search.SearchUi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,6 +42,7 @@ class SearchViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val search: SearchRepoUseCase,
     private val download: DownloadRepoUseCase,
+    private val view: ViewRepoUseCase,
 ) : ViewModel() {
 
     private val _usernameFlow =
@@ -81,6 +83,7 @@ class SearchViewModel @Inject constructor(
                         uiStateFlow.value = UiState.Loaded(items)
                     }
                 }
+
                 is Failure -> uiStateFlow.value = UiState.Failed(result.error.asUiError())
             }
         }
@@ -118,12 +121,21 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    private suspend fun repo(id: Long): Repo {
+        return withContext(Dispatchers.Default) {
+            foundRepos.find { it.id == id }!!
+        }
+    }
+
     fun download(id: Long) {
         viewModelScope.launch {
-            val repo = withContext(Dispatchers.Default) {
-                foundRepos.find { it.id == id }!!
-            }
-            download(repo)
+            download(repo(id))
+        }
+    }
+
+    fun view(id: Long) {
+        viewModelScope.launch {
+            view(repo(id))
         }
     }
 }

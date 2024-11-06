@@ -80,7 +80,8 @@ fun SearchScreen(
                             items(state.items, key = SearchItemUi::id) {
                                 SearchResultItem(
                                     item = it,
-                                    download = { viewModel.download(it.id) },
+                                    download = viewModel::download,
+                                    view = viewModel::view,
                                 )
                             }
                         }

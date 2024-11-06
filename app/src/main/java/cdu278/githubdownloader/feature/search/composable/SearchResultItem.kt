@@ -25,7 +25,8 @@ import cdu278.githubdownloader.ui.Margins
 @Composable
 fun SearchResultItem(
     item: SearchItemUi,
-    download: () -> Unit,
+    download: (Long) -> Unit,
+    view: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -33,21 +34,24 @@ fun SearchResultItem(
         modifier = modifier
             .padding(horizontal = Margins.default, vertical = Margins.half)
     ) {
-        RepoInfo(
+        Info(
             item,
             modifier = Modifier
                 .weight(1f)
         )
         Spacer(Modifier.width(Margins.default))
-        RepoDownloadButton(
+        DownloadState(
             item.downloadState,
-            download,
+            download = { download(item.id) },
+        )
+        ViewButton(
+            onClick = { view(item.id) },
         )
     }
 }
 
 @Composable
-private fun RepoInfo(
+private fun Info(
     item: SearchItemUi,
     modifier: Modifier = Modifier
 ) {
@@ -62,7 +66,7 @@ private fun RepoInfo(
 }
 
 @Composable
-private fun RepoDownloadButton(
+private fun DownloadState(
     downloadState: SearchItemUi.DownloadState,
     download: () -> Unit,
     modifier: Modifier = Modifier
@@ -78,5 +82,18 @@ private fun RepoDownloadButton(
             Started -> CircularProgressIndicator()
             Finished -> Icon(painterResource(R.drawable.ic_downloaded), contentDescription = null)
         }
+    }
+}
+
+@Composable
+private fun ViewButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    IconButton(
+        onClick,
+        modifier = modifier
+    ) {
+        Icon(painterResource(R.drawable.ic_open), contentDescription = null)
     }
 }
