@@ -1,6 +1,7 @@
 package cdu278.githubdownloader.core.repo.download.repository
 
 import cdu278.githubdownloader.core.repo.Repo
+import cdu278.githubdownloader.core.repo.download.DownloadableRepo
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState
 import cdu278.githubdownloader.core.repo.download.db.dao.RepoDownloadDao
 import cdu278.githubdownloader.core.repo.download.db.entity.RepoDownloadEntity
@@ -15,6 +16,9 @@ class RepoDownloadRepositoryImpl @Inject constructor(
     private val dao: RepoDownloadDao,
     private val clock: Clock,
 ) : RepoDownloadRepository {
+
+    override val flow: Flow<List<DownloadableRepo>>
+        get() = dao.flow
 
     override fun statesFlow(repoIds: List<Long>): Flow<Map<Long, RepoDownloadState>> {
         return dao.statesFlow(repoIds).map { states ->

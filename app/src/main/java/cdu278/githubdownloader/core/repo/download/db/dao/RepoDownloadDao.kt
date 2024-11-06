@@ -12,6 +12,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class RepoDownloadDao {
 
+    @get:Query("""
+        SELECT *
+        FROM repo_download
+        ORDER BY created_at DESC
+    """)
+    abstract val flow: Flow<List<RepoDownloadEntity>>
+
     @Query("""
         SELECT id, state
         FROM repo_download

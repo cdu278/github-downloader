@@ -7,4 +7,8 @@
     <string name="search_nothingFound">The user does not exists or has no public repositories</string>
     <string name="username">Username</string>
     <string name="downloads">Downloads</string>
+    <string name="downloads_empty">You have no downloads yet</string>
+    <string name="downloads_state_started">Downloading…</string>
+    <string name="downloads_state_finished">Downloaded</string>
+    <string name="downloads_state_failed">Failed</string>
 </resources>

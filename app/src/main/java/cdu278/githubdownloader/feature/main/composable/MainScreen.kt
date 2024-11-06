@@ -1,6 +1,7 @@
 package cdu278.githubdownloader.feature.main.composable
 
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -34,11 +35,15 @@ fun MainScreen(
             composable<MainRoutes.Search> {
                 SearchScreen(
                     viewModel = hiltViewModel(),
+                    modifier = Modifier
+                        .fillMaxSize()
                 )
             }
             composable<MainRoutes.Downloads> {
                 DownloadsScreen(
                     viewModel = hiltViewModel(),
+                    modifier = Modifier
+                        .fillMaxSize()
                 )
             }
         }

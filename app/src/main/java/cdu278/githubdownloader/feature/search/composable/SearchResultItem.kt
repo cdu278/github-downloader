@@ -9,21 +9,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.sp
 import cdu278.githubdownloader.R
+import cdu278.githubdownloader.feature.description.composable.RepoDescription
 import cdu278.githubdownloader.feature.search.SearchItemUi
 import cdu278.githubdownloader.feature.search.SearchItemUi.DownloadState.Finished
 import cdu278.githubdownloader.feature.search.SearchItemUi.DownloadState.NotStarted
 import cdu278.githubdownloader.feature.search.SearchItemUi.DownloadState.Started
 import cdu278.githubdownloader.ui.Margins
-import cdu278.githubdownloader.ui.SecondaryContentAlpha
 
 @Composable
 fun SearchResultItem(
@@ -58,14 +55,8 @@ private fun RepoInfo(
         modifier = modifier
     ) {
         Text(item.title)
-        item.description?.let { description ->
-            Text(
-                description,
-                color = LocalContentColor.current.copy(alpha = SecondaryContentAlpha),
-                fontSize = 12.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+        item.description?.let {
+            RepoDescription(text = it)
         }
     }
 }
