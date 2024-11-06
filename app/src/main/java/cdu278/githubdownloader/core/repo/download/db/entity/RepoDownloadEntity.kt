@@ -2,13 +2,20 @@ package cdu278.githubdownloader.core.repo.download.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import cdu278.githubdownloader.core.repo.Repo
 import cdu278.githubdownloader.core.repo.download.DownloadableRepo
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState
 import kotlinx.datetime.Instant
 
-@Entity(tableName = "repo_download")
+@Entity(
+    tableName = "repo_download",
+    indices = [
+        Index("download_id", unique = true),
+        Index("created_at"),
+    ],
+)
 class RepoDownloadEntity(
     @PrimaryKey
     override val id: Long,
