@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cdu278.githubdownloader.R
 import cdu278.githubdownloader.feature.downloads.DownloadItemUi
+import cdu278.githubdownloader.feature.downloads.DownloadItemUi.State.Cancelled
 import cdu278.githubdownloader.feature.downloads.DownloadItemUi.State.Failed
 import cdu278.githubdownloader.feature.downloads.DownloadItemUi.State.Finished
 import cdu278.githubdownloader.feature.downloads.DownloadItemUi.State.Started
@@ -66,11 +67,12 @@ private fun StateText(
                 Started -> R.string.downloads_state_started
                 Finished -> R.string.downloads_state_finished
                 Failed -> R.string.downloads_state_failed
+                Cancelled -> R.string.downloads_state_cancelled
             }
         ),
         fontSize = 12.sp,
         color = when (state) {
-            Failed -> MaterialTheme.colorScheme.error
+            Failed, Cancelled -> MaterialTheme.colorScheme.error
             else -> LocalContentColor.current.copy(alpha = SecondaryContentAlpha)
         },
         modifier = modifier

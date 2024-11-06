@@ -1,10 +1,17 @@
 package cdu278.githubdownloader.core.repo.download.service
 
 import android.app.DownloadManager
+import android.app.DownloadManager.COLUMN_STATUS
+import android.app.DownloadManager.STATUS_FAILED
+import android.app.DownloadManager.STATUS_SUCCESSFUL
 import android.net.Uri
 import android.os.Environment
 import cdu278.githubdownloader.core.repo.Repo
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState
+import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Cancelled
+import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Failed
+import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Finished
+import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Started
 import cdu278.githubdownloader.core.repo.download.urlFactory.RepoDownloadUrlFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -36,13 +43,13 @@ class DownloadServiceImpl @Inject constructor(
                             .apply { setFilterById(downloadId) }
                     )
                     .takeIf { it.count > 0 }
-                    ?: return@withContext RepoDownloadState.NotStarted
+                    ?: return@withContext Cancelled
             cursor.moveToFirst()
-            val statusColumnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
+            val statusColumnIndex = cursor.getColumnIndex(COLUMN_STATUS)
             when (cursor.getInt(statusColumnIndex)) {
-                DownloadManager.STATUS_SUCCESSFUL -> RepoDownloadState.Finished
-                DownloadManager.STATUS_FAILED -> RepoDownloadState.Failed
-                else -> RepoDownloadState.Started
+                STATUS_SUCCESSFUL -> Finished
+                STATUS_FAILED -> Failed
+                else -> Started
             }
         }
     }

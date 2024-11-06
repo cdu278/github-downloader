@@ -11,4 +11,5 @@
     <string name="downloads_state_started">Downloading…</string>
     <string name="downloads_state_finished">Downloaded</string>
     <string name="downloads_state_failed">Failed</string>
+    <string name="downloads_state_cancelled">Cancelled</string>
 </resources>

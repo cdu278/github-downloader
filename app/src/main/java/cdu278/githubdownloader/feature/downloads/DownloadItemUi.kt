@@ -12,5 +12,6 @@ data class DownloadItemUi(
         Started,
         Finished,
         Failed,
+        Cancelled,
     }
 }

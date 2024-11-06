@@ -6,4 +6,5 @@ enum class RepoDownloadState {
     Started,
     Finished,
     Failed,
+    Cancelled,
 }

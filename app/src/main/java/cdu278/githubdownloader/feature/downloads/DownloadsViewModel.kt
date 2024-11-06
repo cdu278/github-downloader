@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cdu278.githubdownloader.common.flow.UiSharingStarted
 import cdu278.githubdownloader.core.repo.download.DownloadableRepo
+import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Cancelled
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Failed
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Finished
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.NotStarted
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import cdu278.githubdownloader.feature.downloads.DownloadItemUi.State as ItemUiState
 
 @HiltViewModel
 class DownloadsViewModel @Inject constructor(
@@ -40,9 +42,10 @@ class DownloadsViewModel @Inject constructor(
             title = "$ownerLogin/$name",
             description = description,
             state = when (downloadState) {
-                Started, NotStarted -> DownloadItemUi.State.Started
-                Finished -> DownloadItemUi.State.Finished
-                Failed -> DownloadItemUi.State.Failed
+                Started, NotStarted -> ItemUiState.Started
+                Finished -> ItemUiState.Finished
+                Failed -> ItemUiState.Failed
+                Cancelled -> ItemUiState.Cancelled
             },
         )
     }

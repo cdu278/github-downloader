@@ -13,6 +13,7 @@ import cdu278.githubdownloader.core.Result.Failure
 import cdu278.githubdownloader.core.Result.Ok
 import cdu278.githubdownloader.core.repo.Repo
 import cdu278.githubdownloader.core.repo.download.DownloadableRepo
+import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Cancelled
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Failed
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Finished
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.NotStarted
@@ -115,7 +116,7 @@ class SearchViewModel @Inject constructor(
             downloadState = when (this.downloadState) {
                 Started -> ItemDownloadState.Started
                 Finished -> ItemDownloadState.Finished
-                NotStarted, Failed -> ItemDownloadState.NotStarted
+                NotStarted, Failed, Cancelled -> ItemDownloadState.NotStarted
             },
         )
     }
