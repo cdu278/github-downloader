@@ -93,12 +93,19 @@ class SearchViewModel @Inject constructor(
         combine(
             usernameFlow,
             uiStateFlow,
-        ) { user, state ->
+        ) { username, state ->
             SearchUi(
-                canSearch = user.trim().isNotEmpty(),
+                canSearch = username.isSingleWord(),
                 state,
             )
         }.stateIn(viewModelScope, UiSharingStarted, initialValue = SearchUi())
+
+    private suspend fun String.isSingleWord(): Boolean {
+        return withContext(Dispatchers.Default) {
+            val wordCount = split(' ').count { it.isNotEmpty() }
+            wordCount == 1
+        }
+    }
 
     private fun DownloadableRepo.asItemUi(): SearchItemUi {
         return SearchItemUi(
