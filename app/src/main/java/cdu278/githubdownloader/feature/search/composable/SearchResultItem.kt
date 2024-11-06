@@ -20,14 +20,15 @@ import androidx.compose.ui.unit.sp
 import cdu278.githubdownloader.R
 import cdu278.githubdownloader.feature.search.SearchItemUi
 import cdu278.githubdownloader.feature.search.SearchItemUi.DownloadState.Finished
-import cdu278.githubdownloader.feature.search.SearchItemUi.DownloadState.Started
 import cdu278.githubdownloader.feature.search.SearchItemUi.DownloadState.NotStarted
+import cdu278.githubdownloader.feature.search.SearchItemUi.DownloadState.Started
 import cdu278.githubdownloader.ui.Margins
 import cdu278.githubdownloader.ui.SecondaryContentAlpha
 
 @Composable
 fun SearchResultItem(
     item: SearchItemUi,
+    download: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -41,7 +42,10 @@ fun SearchResultItem(
                 .weight(1f)
         )
         Spacer(Modifier.width(Margins.default))
-        RepoDownloadButton(item.downloadState)
+        RepoDownloadButton(
+            item.downloadState,
+            download,
+        )
     }
 }
 
@@ -69,6 +73,7 @@ private fun RepoInfo(
 @Composable
 private fun RepoDownloadButton(
     downloadState: SearchItemUi.DownloadState,
+    download: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -76,7 +81,7 @@ private fun RepoDownloadButton(
     ) {
         when (downloadState) {
             NotStarted ->
-                IconButton(onClick = { }) {
+                IconButton(onClick = download) {
                     Icon(painterResource(R.drawable.ic_download), contentDescription = null)
                 }
             Started -> CircularProgressIndicator()

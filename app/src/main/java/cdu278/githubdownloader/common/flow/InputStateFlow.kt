@@ -1,4 +1,4 @@
-package cdu278.githubdownloader.util
+package cdu278.githubdownloader.common.flow
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

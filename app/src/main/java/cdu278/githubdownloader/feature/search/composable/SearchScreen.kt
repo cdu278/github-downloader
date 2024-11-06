@@ -78,7 +78,10 @@ fun SearchScreen(
                                 .fillMaxSize()
                         ) {
                             items(state.items, key = SearchItemUi::id) {
-                                SearchResultItem(item = it)
+                                SearchResultItem(
+                                    item = it,
+                                    download = { viewModel.download(it.id) },
+                                )
                             }
                         }
                     }

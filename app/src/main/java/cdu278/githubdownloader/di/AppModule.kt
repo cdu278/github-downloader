@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -18,8 +19,12 @@ import javax.inject.Singleton
 class AppModule {
 
     @Provides
+    @GithubApiBaseUrl
+    fun provideApiBaseUrl(): String = "https://api.github.com"
+
+    @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(@GithubApiBaseUrl baseUrl: String): Retrofit {
         return Retrofit.Builder()
             .client(
                 OkHttpClient.Builder()
@@ -29,10 +34,13 @@ class AppModule {
                     })
                     .build()
             )
-            .baseUrl("https://api.github.com")
+            .baseUrl(baseUrl)
             .addConverterFactory(
                 Json { ignoreUnknownKeys = true }
                     .asConverterFactory("application/json".toMediaType()))
             .build()
     }
+
+    @Provides
+    fun provideClock(): Clock = Clock.System
 }

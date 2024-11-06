@@ -77,4 +77,6 @@ dependencies {
     implementation(libs.retrofit.kotlinx.serialization)
 
     implementation(libs.okhttp.loggingInterceptor)
+
+    implementation(libs.kotlinx.datetime)
 }
