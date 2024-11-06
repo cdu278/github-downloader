@@ -79,4 +79,8 @@ dependencies {
     implementation(libs.okhttp.loggingInterceptor)
 
     implementation(libs.kotlinx.datetime)
+
+    implementation(libs.androidx.navigation.compose)
+
+    implementation(libs.hilt.navigation.compose)
 }
