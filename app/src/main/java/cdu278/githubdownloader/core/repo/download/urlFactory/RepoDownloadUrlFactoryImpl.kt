@@ -10,6 +10,6 @@ class RepoDownloadUrlFactoryImpl @Inject constructor(
 ) : RepoDownloadUrlFactory {
 
     override fun create(repo: Repo): String {
-        return with(repo) { "$baseUrl/repos/$ownerLogin/$name" }
+        return with(repo) { "$baseUrl/repos/$ownerLogin/$name/zipball" }
     }
 }
