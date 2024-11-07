@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.GitHubDownloader" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.GitHubDownloader" parent="Theme.SplashScreen.IconBackground">
+        <item name="postSplashScreenTheme">@style/Theme.GitHubDownloader.Main</item>
+    </style>
+
+    <style name="Theme.GitHubDownloader.Main" parent="android:Theme.Material.Light.NoActionBar" />
+
 </resources>
