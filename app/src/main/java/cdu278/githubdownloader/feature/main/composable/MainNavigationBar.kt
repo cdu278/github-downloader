@@ -34,11 +34,8 @@ fun MainNavigationBar(
                     ?.any { it.hasRoute(tab.route::class) } == true,
                 onClick = {
                     navController.navigate(tab.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
+                        popUpTo(navController.graph.findStartDestination().id)
                         launchSingleTop = true
-                        restoreState = true
                     }
                 },
             )
