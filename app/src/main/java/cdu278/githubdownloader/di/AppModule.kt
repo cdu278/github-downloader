@@ -36,6 +36,7 @@ class AppModule {
             )
             .baseUrl(baseUrl)
             .addConverterFactory(
+                @Suppress("JSON_FORMAT_REDUNDANT")
                 Json { ignoreUnknownKeys = true }
                     .asConverterFactory("application/json".toMediaType()))
             .build()

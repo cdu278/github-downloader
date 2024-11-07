@@ -10,6 +10,7 @@ import cdu278.githubdownloader.core.repo.download.db.typeconverter.RepoDownloadS
 
 @Database(
     version = 1,
+    exportSchema = false,
     entities = [
         RepoDownloadEntity::class,
     ]
