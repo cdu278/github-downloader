@@ -22,16 +22,18 @@ class DownloadServiceImpl @Inject constructor(
     private val urlFactory: RepoDownloadUrlFactory,
 ) : DownloadService {
 
-    override fun download(repo: Repo): Long {
-        val zipUri = Uri.parse(urlFactory.create(repo))
-        return downloadManager.enqueue(
-            DownloadManager.Request(zipUri)
-                .setTitle(with(repo) { "$ownerLogin/$name" })
-                .setDestinationInExternalPublicDir(
-                    Environment.DIRECTORY_DOWNLOADS,
-                    with(repo) { "${ownerLogin}_$name.zip" }
-                )
-        )
+    override suspend fun download(repo: Repo): Long {
+        return withContext(Dispatchers.IO) {
+            val zipUri = Uri.parse(urlFactory.create(repo))
+            downloadManager.enqueue(
+                DownloadManager.Request(zipUri)
+                    .setTitle(with(repo) { "$ownerLogin/$name" })
+                    .setDestinationInExternalPublicDir(
+                        Environment.DIRECTORY_DOWNLOADS,
+                        with(repo) { "${ownerLogin}_$name.zip" }
+                    )
+            )
+        }
     }
 
     override suspend fun state(downloadId: Long): RepoDownloadState {
