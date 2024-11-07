@@ -5,77 +5,42 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
 import androidx.core.content.ContextCompat
-import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Started
-import cdu278.githubdownloader.core.repo.download.repository.RepoDownloadRepository
-import cdu278.githubdownloader.core.repo.download.service.DownloadService
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import cdu278.githubdownloader.core.repo.download.syncStates.SyncRepoDownloadStatesService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.delay
+import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
-class DownloadStatesObserver @AssistedInject constructor(
-    private val repository: RepoDownloadRepository,
-    private val downloadService: DownloadService,
-    @Assisted
-    private val coroutineScope: CoroutineScope,
+class DownloadStatesObserver @Inject constructor(
+    private val receiverFactory: DownloadStateChangesReceiver.Factory,
+    private val syncStatesService: SyncRepoDownloadStatesService,
 ) {
-
-    @AssistedFactory
-    interface Factory {
-
-        fun create(coroutineScope: CoroutineScope): DownloadStatesObserver
-    }
 
     private var receiver: BroadcastReceiver? = null
 
-    private fun createStateChangesReceiver(): BroadcastReceiver {
-        return DownloadStateChangesReceiver(
-            repository,
-            downloadService,
-            coroutineScope,
-        ).also { receiver = it }
-    }
+    private val coroutineScope = CoroutineScope(Job() + Dispatchers.Main.immediate)
 
-    fun register(context: Context) {
-        coroutineScope.launch {
-            syncDownloadStates()
-            ContextCompat.registerReceiver(
-                context,
-                createStateChangesReceiver(),
-                IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE),
-                ContextCompat.RECEIVER_EXPORTED,
-            )
-        }
-    }
-
-    private suspend fun syncDownloadStates() {
-        withContext(Dispatchers.Default) {
-            repository
-                .getDownloadIdsByState(Started)
-                .map { downloadId ->
-                    async {
-                        Pair(downloadId, downloadService.state(downloadId))
-                    }
-                }
-                .awaitAll()
-                .filter { (_, actualState) -> actualState != Started }
-                .map { (downloadId, actualState) ->
-                    launch {
-                        repository.updateState(downloadId, actualState)
-                    }
-                }
-                .joinAll()
+    suspend fun observe(context: Context) {
+        ContextCompat.registerReceiver(
+            context,
+            receiverFactory
+                .create(coroutineScope)
+                .also { receiver = it },
+            IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE),
+            ContextCompat.RECEIVER_EXPORTED,
+        )
+        while (true) {
+            syncStatesService.sync()
+            delay(5.seconds)
         }
     }
 
     fun unregister(context: Context) {
         context.unregisterReceiver(receiver)
         receiver = null
+        coroutineScope.coroutineContext.cancelChildren()
     }
 }

@@ -10,6 +10,8 @@ import cdu278.githubdownloader.core.repo.download.repository.RepoDownloadReposit
 import cdu278.githubdownloader.core.repo.download.repository.RepoDownloadRepositoryImpl
 import cdu278.githubdownloader.core.repo.download.service.DownloadService
 import cdu278.githubdownloader.core.repo.download.service.DownloadServiceImpl
+import cdu278.githubdownloader.core.repo.download.syncStates.SyncRepoDownloadStatesService
+import cdu278.githubdownloader.core.repo.download.syncStates.SyncRepoDownloadStatesServiceImpl
 import cdu278.githubdownloader.core.repo.download.urlFactory.RepoDownloadUrlFactory
 import cdu278.githubdownloader.core.repo.download.urlFactory.RepoDownloadUrlFactoryImpl
 import dagger.Binds
@@ -51,4 +53,9 @@ interface RepoDownloadModule {
 
     @Binds
     fun bindService(impl: DownloadServiceImpl): DownloadService
+
+    @Binds
+    fun bindSyncStatesService(
+        impl: SyncRepoDownloadStatesServiceImpl
+    ) : SyncRepoDownloadStatesService
 }

@@ -6,14 +6,24 @@ import android.content.Context
 import android.content.Intent
 import cdu278.githubdownloader.core.repo.download.repository.RepoDownloadRepository
 import cdu278.githubdownloader.core.repo.download.service.DownloadService
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class DownloadStateChangesReceiver(
+class DownloadStateChangesReceiver @AssistedInject constructor(
     private val repository: RepoDownloadRepository,
     private val downloadService: DownloadService,
+    @Assisted
     private val coroutineScope: CoroutineScope,
 ) : BroadcastReceiver() {
+
+    @AssistedFactory
+    interface Factory {
+
+        fun create(coroutineScope: CoroutineScope): DownloadStateChangesReceiver
+    }
 
     override fun onReceive(context: Context, intent: Intent) {
         coroutineScope.launch {
