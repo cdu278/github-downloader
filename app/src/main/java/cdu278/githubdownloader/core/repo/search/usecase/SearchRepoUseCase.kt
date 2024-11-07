@@ -3,7 +3,6 @@ package cdu278.githubdownloader.core.repo.search.usecase
 import cdu278.githubdownloader.core.ApiError
 import cdu278.githubdownloader.core.Result
 import cdu278.githubdownloader.core.map
-import cdu278.githubdownloader.core.repo.download.DownloadableRepo
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.NotStarted
 import cdu278.githubdownloader.core.repo.download.RepoWithDownloadState
 import cdu278.githubdownloader.core.repo.download.repository.RepoDownloadRepository
@@ -19,7 +18,7 @@ class SearchRepoUseCase @Inject constructor(
     private val downloadRepository: RepoDownloadRepository,
 ) {
 
-    suspend operator fun invoke(username: String): Result<Flow<List<DownloadableRepo>>, ApiError> {
+    suspend operator fun invoke(username: String): Result<Flow<List<RepoWithDownloadState>>, ApiError> {
         return searchRepository.search(username).map { repos ->
             val repoIds = withContext(Dispatchers.Default) {
                 repos.map { it.id }

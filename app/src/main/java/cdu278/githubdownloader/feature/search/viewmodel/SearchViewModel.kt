@@ -12,12 +12,12 @@ import cdu278.githubdownloader.core.ApiError.Unknown
 import cdu278.githubdownloader.core.Result.Failure
 import cdu278.githubdownloader.core.Result.Ok
 import cdu278.githubdownloader.core.repo.Repo
-import cdu278.githubdownloader.core.repo.download.DownloadableRepo
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Cancelled
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Failed
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Finished
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.NotStarted
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Started
+import cdu278.githubdownloader.core.repo.download.RepoWithDownloadState
 import cdu278.githubdownloader.core.repo.download.usercase.DownloadRepoUseCase
 import cdu278.githubdownloader.core.repo.search.usecase.SearchRepoUseCase
 import cdu278.githubdownloader.core.repo.usecase.ViewRepoUseCase
@@ -108,7 +108,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun DownloadableRepo.asItemUi(): SearchItemUi {
+    private fun RepoWithDownloadState.asItemUi(): SearchItemUi {
         return SearchItemUi(
             id = this.id,
             title = this.name,

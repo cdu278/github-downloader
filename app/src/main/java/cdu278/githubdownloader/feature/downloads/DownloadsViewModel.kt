@@ -3,12 +3,12 @@ package cdu278.githubdownloader.feature.downloads
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cdu278.githubdownloader.common.flow.UiSharingStarted
-import cdu278.githubdownloader.core.repo.download.DownloadableRepo
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Cancelled
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Failed
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Finished
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.NotStarted
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Started
+import cdu278.githubdownloader.core.repo.download.RepoWithDownloadState
 import cdu278.githubdownloader.core.repo.download.usercase.GetDownloadsFlowUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
@@ -36,7 +36,7 @@ class DownloadsViewModel @Inject constructor(
             )
         }.stateIn(viewModelScope, UiSharingStarted, initialValue = DownloadsUi.Initial)
 
-    private fun DownloadableRepo.asItemUi(): DownloadItemUi {
+    private fun RepoWithDownloadState.asItemUi(): DownloadItemUi {
         return DownloadItemUi(
             id = id,
             title = "$ownerLogin/$name",

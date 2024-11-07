@@ -1,8 +1,8 @@
 package cdu278.githubdownloader.core.repo.download.repository
 
 import cdu278.githubdownloader.core.repo.Repo
-import cdu278.githubdownloader.core.repo.download.DownloadableRepo
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState
+import cdu278.githubdownloader.core.repo.download.RepoWithDownloadState
 import cdu278.githubdownloader.core.repo.download.db.dao.RepoDownloadDao
 import cdu278.githubdownloader.core.repo.download.db.entity.RepoDownloadEntity
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,7 @@ class RepoDownloadRepositoryImpl @Inject constructor(
     private val clock: Clock,
 ) : RepoDownloadRepository {
 
-    override val flow: Flow<List<DownloadableRepo>>
+    override val flow: Flow<List<RepoWithDownloadState>>
         get() = dao.flow
 
     override fun statesFlow(repoIds: List<Long>): Flow<Map<Long, RepoDownloadState>> {

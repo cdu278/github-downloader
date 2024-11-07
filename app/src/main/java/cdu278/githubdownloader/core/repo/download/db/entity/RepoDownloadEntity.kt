@@ -5,8 +5,8 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import cdu278.githubdownloader.core.repo.Repo
-import cdu278.githubdownloader.core.repo.download.DownloadableRepo
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState
+import cdu278.githubdownloader.core.repo.download.RepoWithDownloadState
 import kotlinx.datetime.Instant
 
 @Entity(
@@ -31,7 +31,7 @@ class RepoDownloadEntity(
     override val downloadState: RepoDownloadState,
     @ColumnInfo(name = "created_at")
     val createdAt: Instant,
-) : DownloadableRepo {
+) : RepoWithDownloadState {
 
     companion object {
 
