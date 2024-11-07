@@ -1,8 +1,8 @@
 package cdu278.githubdownloader.core.repo.search.usecase
 
+import cdu278.githubdownloader.common.Result
+import cdu278.githubdownloader.common.map
 import cdu278.githubdownloader.core.ApiError
-import cdu278.githubdownloader.core.Result
-import cdu278.githubdownloader.core.map
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.NotStarted
 import cdu278.githubdownloader.core.repo.download.RepoWithDownloadState
 import cdu278.githubdownloader.core.repo.download.repository.RepoDownloadRepository

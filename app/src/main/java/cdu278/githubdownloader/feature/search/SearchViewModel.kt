@@ -3,14 +3,14 @@ package cdu278.githubdownloader.feature.search
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cdu278.githubdownloader.common.Result.Failure
+import cdu278.githubdownloader.common.Result.Ok
 import cdu278.githubdownloader.common.flow.UiSharingStarted
 import cdu278.githubdownloader.common.flow.inputStateFlow
 import cdu278.githubdownloader.core.ApiError
 import cdu278.githubdownloader.core.ApiError.Io
 import cdu278.githubdownloader.core.ApiError.TooManyRequests
 import cdu278.githubdownloader.core.ApiError.Unknown
-import cdu278.githubdownloader.core.Result.Failure
-import cdu278.githubdownloader.core.Result.Ok
 import cdu278.githubdownloader.core.repo.Repo
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Cancelled
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Failed

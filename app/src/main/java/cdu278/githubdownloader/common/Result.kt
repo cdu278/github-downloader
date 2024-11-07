@@ -1,4 +1,4 @@
-package cdu278.githubdownloader.core
+package cdu278.githubdownloader.common
 
 sealed interface Result<out T, out Error> {
 
