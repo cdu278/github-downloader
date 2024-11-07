@@ -10,29 +10,36 @@ import cdu278.githubdownloader.core.repo.download.db.entity.RepoIdAndDownloadSta
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-abstract class RepoDownloadDao {
+interface RepoDownloadDao {
 
     @get:Query("""
         SELECT *
         FROM repo_download
         ORDER BY created_at DESC
     """)
-    abstract val flow: Flow<List<RepoDownloadEntity>>
+    val flow: Flow<List<RepoDownloadEntity>>
 
     @Query("""
         SELECT id, state
         FROM repo_download
         WHERE id IN (:repoIds)
     """)
-    abstract fun statesFlow(repoIds: List<Long>): Flow<List<RepoIdAndDownloadState>>
+    fun statesFlow(repoIds: List<Long>): Flow<List<RepoIdAndDownloadState>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insert(entity: RepoDownloadEntity)
+    suspend fun insert(entity: RepoDownloadEntity)
 
     @Query("""
         UPDATE repo_download
         SET state = :newState
         WHERE download_id = :downloadId
     """)
-    abstract suspend fun updateState(downloadId: Long, newState: RepoDownloadState)
+    suspend fun updateState(downloadId: Long, newState: RepoDownloadState)
+
+    @Query("""
+        SELECT download_id
+        FROM repo_download
+        WHERE state = :state
+    """)
+    suspend fun selectDownloadIdsByState(state: RepoDownloadState): List<Long>
 }

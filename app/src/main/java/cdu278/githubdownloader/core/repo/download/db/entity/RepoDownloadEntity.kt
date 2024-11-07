@@ -14,6 +14,7 @@ import kotlinx.datetime.Instant
     indices = [
         Index("download_id", unique = true),
         Index("created_at"),
+        Index("state"),
     ],
 )
 class RepoDownloadEntity(

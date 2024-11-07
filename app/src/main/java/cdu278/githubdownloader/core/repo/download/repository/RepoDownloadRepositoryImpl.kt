@@ -35,4 +35,8 @@ class RepoDownloadRepositoryImpl @Inject constructor(
     override suspend fun updateState(downloadId: Long, newState: RepoDownloadState) {
         dao.updateState(downloadId, newState)
     }
+
+    override suspend fun getDownloadIdsByState(state: RepoDownloadState): List<Long> {
+        return dao.selectDownloadIdsByState(state)
+    }
 }

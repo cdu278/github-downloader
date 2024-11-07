@@ -14,4 +14,6 @@ interface RepoDownloadRepository {
     suspend fun create(repo: Repo, downloadId: Long)
 
     suspend fun updateState(downloadId: Long, newState: RepoDownloadState)
+
+    suspend fun getDownloadIdsByState(state: RepoDownloadState): List<Long>
 }

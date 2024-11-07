@@ -29,16 +29,6 @@
 
         </activity>
 
-        <receiver
-            android:name=".core.repo.download.broadcastreceiver.DownloadStateChangesReceiver"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
-            </intent-filter>
-
-        </receiver>
-
     </application>
 
 </manifest>
