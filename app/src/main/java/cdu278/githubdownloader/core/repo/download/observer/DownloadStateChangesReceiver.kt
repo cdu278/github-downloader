@@ -5,7 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import cdu278.githubdownloader.core.repo.download.repository.RepoDownloadRepository
-import cdu278.githubdownloader.core.repo.download.service.DownloadService
+import cdu278.githubdownloader.core.repo.download.service.DownloadRepoService
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class DownloadStateChangesReceiver @AssistedInject constructor(
     private val repository: RepoDownloadRepository,
-    private val downloadService: DownloadService,
+    private val downloadService: DownloadRepoService,
     @Assisted
     private val coroutineScope: CoroutineScope,
 ) : BroadcastReceiver() {

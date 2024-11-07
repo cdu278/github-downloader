@@ -3,7 +3,7 @@ package cdu278.githubdownloader.core.repo.download.service
 import cdu278.githubdownloader.core.repo.Repo
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState
 
-interface DownloadService {
+interface DownloadRepoService {
 
     suspend fun download(repo: Repo): Long
 

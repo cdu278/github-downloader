@@ -8,8 +8,8 @@ import cdu278.githubdownloader.core.repo.download.db.RepoDownloadDatabase
 import cdu278.githubdownloader.core.repo.download.db.dao.RepoDownloadDao
 import cdu278.githubdownloader.core.repo.download.repository.RepoDownloadRepository
 import cdu278.githubdownloader.core.repo.download.repository.RepoDownloadRepositoryImpl
-import cdu278.githubdownloader.core.repo.download.service.DownloadService
-import cdu278.githubdownloader.core.repo.download.service.DownloadServiceImpl
+import cdu278.githubdownloader.core.repo.download.service.DownloadRepoService
+import cdu278.githubdownloader.core.repo.download.service.DownloadRepoServiceImpl
 import cdu278.githubdownloader.core.repo.download.syncStates.SyncRepoDownloadStatesService
 import cdu278.githubdownloader.core.repo.download.syncStates.SyncRepoDownloadStatesServiceImpl
 import cdu278.githubdownloader.core.repo.download.urlFactory.RepoDownloadUrlFactory
@@ -52,7 +52,7 @@ interface RepoDownloadModule {
     fun bindUrlFactory(impl: RepoDownloadUrlFactoryImpl): RepoDownloadUrlFactory
 
     @Binds
-    fun bindService(impl: DownloadServiceImpl): DownloadService
+    fun bindService(impl: DownloadRepoServiceImpl): DownloadRepoService
 
     @Binds
     fun bindSyncStatesService(

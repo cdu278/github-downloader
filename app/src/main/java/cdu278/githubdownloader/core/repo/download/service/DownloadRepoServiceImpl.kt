@@ -17,10 +17,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class DownloadServiceImpl @Inject constructor(
+class DownloadRepoServiceImpl @Inject constructor(
     private val downloadManager: DownloadManager,
     private val urlFactory: RepoDownloadUrlFactory,
-) : DownloadService {
+) : DownloadRepoService {
 
     override suspend fun download(repo: Repo): Long {
         return withContext(Dispatchers.IO) {

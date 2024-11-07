@@ -2,7 +2,7 @@ package cdu278.githubdownloader.core.repo.download.syncStates
 
 import cdu278.githubdownloader.core.repo.download.RepoDownloadState.Started
 import cdu278.githubdownloader.core.repo.download.repository.RepoDownloadRepository
-import cdu278.githubdownloader.core.repo.download.service.DownloadService
+import cdu278.githubdownloader.core.repo.download.service.DownloadRepoService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class SyncRepoDownloadStatesServiceImpl @Inject constructor(
     private val repository: RepoDownloadRepository,
-    private val downloadService: DownloadService,
+    private val downloadService: DownloadRepoService,
 ) : SyncRepoDownloadStatesService {
 
     override suspend fun sync() {
