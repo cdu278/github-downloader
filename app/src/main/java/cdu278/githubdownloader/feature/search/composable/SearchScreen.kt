@@ -23,7 +23,7 @@ import cdu278.githubdownloader.feature.search.SearchUi.State.Failed
 import cdu278.githubdownloader.feature.search.SearchUi.State.Initial
 import cdu278.githubdownloader.feature.search.SearchUi.State.Loaded
 import cdu278.githubdownloader.feature.search.SearchUi.State.Loading
-import cdu278.githubdownloader.feature.search.viewmodel.SearchViewModel
+import cdu278.githubdownloader.feature.search.SearchViewModel
 import cdu278.githubdownloader.ui.Margins
 
 @Composable

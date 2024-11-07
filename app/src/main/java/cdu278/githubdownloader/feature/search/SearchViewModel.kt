@@ -1,4 +1,4 @@
-package cdu278.githubdownloader.feature.search.viewmodel
+package cdu278.githubdownloader.feature.search
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -21,8 +21,6 @@ import cdu278.githubdownloader.core.repo.download.RepoWithDownloadState
 import cdu278.githubdownloader.core.repo.download.usercase.DownloadRepoUseCase
 import cdu278.githubdownloader.core.repo.search.usecase.SearchRepoUseCase
 import cdu278.githubdownloader.core.repo.usecase.ViewRepoUseCase
-import cdu278.githubdownloader.feature.search.SearchItemUi
-import cdu278.githubdownloader.feature.search.SearchUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
