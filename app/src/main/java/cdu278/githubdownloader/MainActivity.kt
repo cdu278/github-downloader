@@ -12,6 +12,7 @@ import cdu278.githubdownloader.core.repo.download.observer.DownloadStatesObserve
 import cdu278.githubdownloader.feature.main.composable.MainScreen
 import cdu278.githubdownloader.ui.theme.GitHubDownloaderTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var downloadStatesObserver: DownloadStatesObserver
+    lateinit var downloadStatesObserverFactory: DownloadStatesObserver.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -34,6 +35,8 @@ class MainActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch {
+            val downloadStatesObserver =
+                downloadStatesObserverFactory.create(parentJob = coroutineContext[Job]!!)
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 downloadStatesObserver.observe(context = this@MainActivity)
             }

@@ -5,21 +5,31 @@ import android.content.Context
 import android.content.IntentFilter
 import androidx.core.content.ContextCompat
 import cdu278.githubdownloader.core.repo.download.syncStates.SyncRepoDownloadStatesService
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
-import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
-class DownloadStatesObserver @Inject constructor(
+class DownloadStatesObserver @AssistedInject constructor(
+    @Assisted
+    private val parentJob: Job,
     private val receiverFactory: DownloadStateChangesReceiver.Factory,
     private val syncStatesService: SyncRepoDownloadStatesService,
 ) {
 
-    private val coroutineScope = CoroutineScope(Job() + Dispatchers.Main.immediate)
+    @AssistedFactory
+    interface Factory {
+
+        fun create(parentJob: Job): DownloadStatesObserver
+    }
+
+    private val coroutineScope = CoroutineScope(Job(parentJob) + Dispatchers.Main.immediate)
 
     suspend fun observe(context: Context) {
         val receiver = receiverFactory.create(coroutineScope)
