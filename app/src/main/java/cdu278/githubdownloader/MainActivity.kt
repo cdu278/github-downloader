@@ -39,9 +39,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    override fun onStop() {
-        super.onStop()
-        downloadStatesObserver.unregister(context = this)
-    }
 }
