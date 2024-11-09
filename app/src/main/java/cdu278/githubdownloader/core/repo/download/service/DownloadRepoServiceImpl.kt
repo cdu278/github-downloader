@@ -38,21 +38,24 @@ class DownloadRepoServiceImpl @Inject constructor(
 
     override suspend fun state(downloadId: Long): RepoDownloadState {
         return withContext(Dispatchers.IO) {
-            val cursor =
-                downloadManager
-                    .query(
-                        DownloadManager.Query()
-                            .apply { setFilterById(downloadId) }
-                    )
-                    .takeIf { it.count > 0 }
-                    ?: return@withContext Cancelled
-            cursor.moveToFirst()
-            val statusColumnIndex = cursor.getColumnIndex(COLUMN_STATUS)
-            when (cursor.getInt(statusColumnIndex)) {
-                STATUS_SUCCESSFUL -> Finished
-                STATUS_FAILED -> Failed
-                else -> Started
-            }
+            downloadManager
+                .query(
+                    DownloadManager.Query()
+                        .apply { setFilterById(downloadId) }
+                )
+                .use { cursor ->
+                    val empty = !cursor.moveToFirst()
+                    if (empty) {
+                        Cancelled
+                    } else {
+                        val statusColumnIndex = cursor.getColumnIndex(COLUMN_STATUS)
+                        when (cursor.getInt(statusColumnIndex)) {
+                            STATUS_SUCCESSFUL -> Finished
+                            STATUS_FAILED -> Failed
+                            else -> Started
+                        }
+                    }
+                }
         }
     }
 }
